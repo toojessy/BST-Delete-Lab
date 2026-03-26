@@ -26,19 +26,47 @@ public class BST<E extends Comparable<E>> implements Tree<E> {
     // ── Search ───────────────────────────────────────────────────────────
     @Override
     public boolean search(E e) {
-        // TODO: return true if e is in the tree, false otherwise
-        // follow the invariant from root; return false when current is null
-        return false; // replace this
+        TreeNode<E> current = root;
+        
+        while (current != null) {
+            if (e.compareTo(current.element) < 0) {
+                current = current.left;
+            } else if (e.compareTo(current.element) > 0) {
+                current = current.right;
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 
     // ── Insert ───────────────────────────────────────────────────────────
     @Override
     public boolean insert(E e) {
-        // TODO: insert e into the correct position
-        // return false if e is already in the tree (duplicate)
-        // return true if inserted successfully
-        // remember to increment size
-        return false; // replace this
+        if (root == null) {
+            root = new TreeNode<>(e);
+            size++;
+            return true;
+        }
+        TreeNode<E> parent = null;
+        TreeNode<E> current = root;
+        
+        while (current != null) {
+            if (e.compareTo(current.element) < 0) {
+                parent = current;
+                current = current.left;
+            } else {
+                return false;
+            }
+        }
+        if (e.compareTo(parent.element) < 0) {
+            parent.left = new TreeNode<>(e);
+        } else {
+            parent.right = new TreeNode<>(e);
+        }
+        
+        size++;
+        return true;
     }
 
     // ── Delete ───────────────────────────────────────────────────────────
