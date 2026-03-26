@@ -27,7 +27,7 @@ public class BST<E extends Comparable<E>> implements Tree<E> {
     @Override
     public boolean search(E e) {
         TreeNode<E> current = root;
-        
+
         while (current != null) {
             if (e.compareTo(current.element) < 0) {
                 current = current.left;
@@ -50,7 +50,7 @@ public class BST<E extends Comparable<E>> implements Tree<E> {
         }
         TreeNode<E> parent = null;
         TreeNode<E> current = root;
-        
+
         while (current != null) {
             if (e.compareTo(current.element) < 0) {
                 parent = current;
@@ -64,7 +64,7 @@ public class BST<E extends Comparable<E>> implements Tree<E> {
         } else {
             parent.right = new TreeNode<>(e);
         }
-        
+
         size++;
         return true;
     }
@@ -72,12 +72,53 @@ public class BST<E extends Comparable<E>> implements Tree<E> {
     // ── Delete ───────────────────────────────────────────────────────────
     @Override
     public boolean delete(E e) {
-        // TODO: remove e from the tree
-        // handle all three cases: leaf, one child, two children
-        // return false if e is not found
-        // return true if deleted successfully
-        // remember to decrement size
-        return false; // replace this
+        TreeNode<E> parent = null;
+        TreeNode<E> current = root;
+        
+        while (current != null) {
+            if (e.compareTo(current.element) < 0) {
+                parent = current;
+                current = current.left;
+            } else if (e.compareTo(current.element) > 0) {
+                parent = current;
+                current = current.right;
+            } else {
+                break;
+            }
+        } 
+        if (current == null) {
+            return false;
+        }
+        
+        if (current.left == null) {
+            if (parent == null) {
+                root = current.right;
+            } else {
+                if (e.compareTo(parent.element) < 0) {
+                    parent.left = current.right;
+                } else {
+                    parent.right = current.right;
+                }
+            }
+        } else {
+            TreeNode<E> parentOfRightMost = current;
+            TreeNode<E> rightMost = current.left;
+            
+            while (rightMost.right != null) {
+                parentOfRightMost = rightMost;
+                rightMost = rightMost.right;
+            }
+            
+            current.element = rightMost.element;
+            
+            if (parentOfRightMost.right == rightMost) {
+                parentOfRightMost.right = rightMost.left;
+            } else {
+                parentOfRightMost.right = rightMost.left;
+            }
+        }
+        size--;
+        return true;
     }
 
     // ── Traversals ───────────────────────────────────────────────────────
